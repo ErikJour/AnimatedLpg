@@ -77,6 +77,8 @@ target_sources(AnimatedLPG
         source/AnimatedLpgProcessor.cpp
         dsp/AnimatedLPG.cpp
         dsp/AnimatedVactrol.cpp
+        ui/resourceManager.cpp
+        ui/WebGpuWindow.cpp
 )
 
 #if (APPLE)
@@ -92,8 +94,8 @@ target_include_directories(AnimatedLPG
         include
         source
         dsp
-#       UI
-#       procedural
+        ui
+        procedural
 #       shaders
 #       utilities
 )
