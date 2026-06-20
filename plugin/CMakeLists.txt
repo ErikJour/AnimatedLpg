@@ -75,6 +75,7 @@ target_sources(AnimatedLPG
         PRIVATE
         source/AnimatedLpgEditor.cpp
         source/AnimatedLpgProcessor.cpp
+        dsp/AnimatedLPG.cpp
 #        UI/webGpuWindow.cpp
 #        UI/ResourceManager.cpp
 #        UI/Scene.cpp
