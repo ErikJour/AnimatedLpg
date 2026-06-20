@@ -76,18 +76,7 @@ target_sources(AnimatedLPG
         source/AnimatedLpgEditor.cpp
         source/AnimatedLpgProcessor.cpp
         dsp/AnimatedLPG.cpp
-#        UI/webGpuWindow.cpp
-#        UI/ResourceManager.cpp
-#        UI/Scene.cpp
-#        UI/LogoHud.cpp
-#        UI/SliderManager.cpp
-#        UI/SliderCatalog.cpp
-#        UI/Text3D.cpp
-#        dsp/NoiseSynth.cpp
-#        dsp/NoiseGenerator.cpp
-#        dsp/CombFilter.cpp
-#        dsp/NoiseVoice.cpp
-#        dsp/AnimatedGain.cpp
+        dsp/AnimatedVactrol.cpp
 )
 
 #if (APPLE)
