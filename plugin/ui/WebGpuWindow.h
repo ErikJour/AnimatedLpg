@@ -5,9 +5,9 @@
 #pragma once
 #include <webgpu/webgpu.h>
 #include "shaderLoader.h"
-#include "Scene.h"
+#include "scene.h"
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
 
 class WebGpuWindow

@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     bool ResourceManager::loadGeometry(const std::filesystem::path& path,
                                           std::vector<float>& pointData,

@@ -3,7 +3,7 @@
 //
 #pragma once
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     struct FloorVertex
     {

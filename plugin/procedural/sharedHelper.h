@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     // --- 3D Geometry Structures ---
     struct Vertex { float x, y, z, nx, ny, nz, r, g, b; };

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "cameraState.h"
+
 
 namespace AnimatedLpg
 {
@@ -43,6 +45,18 @@ class AnimatedLpgAudioProcessor final : public juce::AudioProcessor
         //==============================================================================
         void getStateInformation (juce::MemoryBlock& destData) override;
         void setStateInformation (const void* data, int sizeInBytes) override;
+
+
+        using ResponseCallback = std::function<void(const std::string&)>;
+        void setResponseCallback(ResponseCallback cb)
+        {
+            std::lock_guard<std::mutex> lock(mResponseMutex);
+            mResponseCallback = std::move(cb);
+        }
+
+        CameraState savedCameraState;
+        ResponseCallback mResponseCallback;
+        std::mutex       mResponseMutex;
 
     private:
         //==============================================================================

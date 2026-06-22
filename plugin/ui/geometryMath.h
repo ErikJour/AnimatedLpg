@@ -5,7 +5,7 @@
 #include <cmath>
 #include <cstdint>
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     struct vec3 {
         float x, y, z;

@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <webgpu/webgpu.h>
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     class ResourceManager {
     public:

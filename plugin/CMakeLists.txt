@@ -79,12 +79,13 @@ target_sources(AnimatedLPG
         dsp/AnimatedVactrol.cpp
         ui/resourceManager.cpp
         ui/WebGpuWindow.cpp
+        ui/scene.cpp
 )
 
-#if (APPLE)
-#    target_sources(AnimatedLPG PRIVATE source/GpuSurface.mm)
-#    target_link_libraries(AnimatedLPG PRIVATE "-framework QuartzCore" "-framework Metal")
-#endif()
+if (APPLE)
+    target_sources(AnimatedLPG PRIVATE source/GpuSurface.mm)
+    target_link_libraries(AnimatedLPG PRIVATE "-framework QuartzCore" "-framework Metal")
+endif()
 
 #==================================
 #Include directories
@@ -138,39 +139,30 @@ else()
     )
 endif()
 
-##==================================
-## Shader files (concatenated in order)
-##==================================
-#set(SHADER_FILES
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/common.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/lighting.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_cave.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_noise_level_slider.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_comb_slider.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_particle.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_global_gain_slider.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_floor.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_skylight.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_lpg_rez_slider.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_noise_density_slider.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_text.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/vs_main.wgsl"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/fs_main.wgsl"
-#)
-#
-#set(SHADER_SOURCE "")
-#foreach(SHADER_FILE ${SHADER_FILES})
-#    file(READ "${SHADER_FILE}" SHADER_CHUNK)
-#    string(APPEND SHADER_SOURCE "${SHADER_CHUNK}\n")
-#endforeach()
-#
-#configure_file(
-#        "${CMAKE_CURRENT_SOURCE_DIR}/UI/shader.wgsl.h.in"
-#        "${CMAKE_CURRENT_BINARY_DIR}/shader.wgsl.h"
-#)
-#
-#target_compile_definitions(AnimatedLPG PRIVATE
-#        DEBUG_SHADER_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shaders"
-#)
-#
-#target_include_directories(AnimatedLPG PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+#==================================
+# Shader files (concatenated in order)
+#==================================
+set(SHADER_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/common.wgsl"
+        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/lighting.wgsl"
+        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/mat_floor.wgsl"
+        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/vs_main.wgsl"
+        "${CMAKE_CURRENT_SOURCE_DIR}/shaders/fs_main.wgsl"
+)
+
+set(SHADER_SOURCE "")
+foreach(SHADER_FILE ${SHADER_FILES})
+    file(READ "${SHADER_FILE}" SHADER_CHUNK)
+    string(APPEND SHADER_SOURCE "${SHADER_CHUNK}\n")
+endforeach()
+
+configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/ui/shader.wgsl.h.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/shader.wgsl.h"
+)
+
+target_compile_definitions(AnimatedLPG PRIVATE
+        DEBUG_SHADER_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shaders"
+)
+
+target_include_directories(AnimatedLPG PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")

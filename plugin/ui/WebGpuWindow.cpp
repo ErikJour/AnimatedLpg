@@ -2,10 +2,10 @@
 // Created by Erik Jourgensen on 6/20/26.
 //
 
-#include "webGpuWindow.h"
-#include "GpuSurface.h"
+#include "WebGpuWindow.h"
+#include "gpuSurface.h"
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
 
 WebGpuWindow::WebGpuWindow()    = default;

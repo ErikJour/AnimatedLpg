@@ -7,13 +7,9 @@
 #include <webgpu/webgpu.h>
 #include <filesystem>
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
-    // Shared MSAA sample count. Every render pipeline and every render-pass color
-    // attachment / depth attachment that participate in the same pass MUST use this
-    // identical value, or pipeline creation / pass begin will fail validation.
     static constexpr uint32_t kMSAASamples = 4;
-
 
     inline WGPUAdapter requestAdapterSync(WGPUInstance instance, WGPURequestAdapterOptions const* options) {
         struct UserData {

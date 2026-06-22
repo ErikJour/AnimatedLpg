@@ -3,7 +3,7 @@
 #include <webgpu/webgpu.h>
 #include "sharedHelper.h"
 #include "utilityHelper.h"
-#include "ResourceManager.h"
+#include "resourceManager.h"
 #include "MyUniforms.h"
 #include "geometryMath.h"
 #include "circularFloor.h"
@@ -12,7 +12,7 @@
 
 #define WGPU_STR(s) WGPUStringView{s, sizeof(s) - 1}
 
-namespace AnimatedLPG
+namespace AnimatedLpg
 {
     class Scene
     {
@@ -22,15 +22,13 @@ namespace AnimatedLPG
         void init(WGPUDevice device, WGPUQueue queue);
         void setSurface(WGPUSurface surface);
         void setShaderModule(WGPUShaderModule shaderModule);
-        void setPipelineDesc(WGPURenderPipelineDescriptor pipelineDesc);
-        void setWindowColor();
+        void setPipelineDesc(const WGPURenderPipelineDescriptor& pipelineDesc);
         bool createShader();
         void terminate();
         void reloadShader();
-        void setUniforms(WGPUQueue queue, WGPUBuffer uniformBuffer, float time);
+        void setUniforms(float time);
         void renderFrame(float currentTime);
         void ConfigureVertexLayout();
-        bool createParticlePipeline();
         void initializeScene();
         bool createPipeline();
         void initializeFloor();
