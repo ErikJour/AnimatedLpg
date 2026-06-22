@@ -26,7 +26,7 @@ namespace AnimatedLpg
         bool createShader();
         void terminate();
         void reloadShader();
-        void setUniforms(float time);
+        void setUniforms(WGPUQueue queue, WGPUBuffer uniformBuffer, float time);
         void renderFrame(float currentTime);
         void ConfigureVertexLayout();
         void initializeScene();

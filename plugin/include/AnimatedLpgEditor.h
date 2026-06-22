@@ -34,9 +34,9 @@ namespace AnimatedLpg
         juce::NSViewComponent mMetalView;
 #endif
         std::string mTypedText;
-        bool  mDragging     = false;
-        float mDragOffset   = 0.0f;
-        int   mActiveSlider = 0;
+        bool     mDragging      = false;
+        float    mDragOffset    = 0.0f;
+        int      mActiveSlider  = 0;
 
         bool     timerReady     = false;
         bool     mResizePending = false;
@@ -49,9 +49,6 @@ namespace AnimatedLpg
         bool  mCameraDragging = false;
         float mLastMouseX     = 0.0f;
         float mLastMouseY     = 0.0f;
-
-        // Text input
-        bool mTextInputActive = false;
 
         double mStartTimeMs = 0.0;
         double mLastFrameMs = 0.0;

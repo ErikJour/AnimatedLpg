@@ -15,7 +15,6 @@ namespace AnimatedLpg
         webGpuWindow.initialize();
         processorRef.setResponseCallback([this](const std::string& result) {
         juce::MessageManager::callAsync([this, result]() {
-          mTextInputActive = false;
           setWantsKeyboardFocus(false);
         });
     });
@@ -84,7 +83,6 @@ void AnimatedLpgProcessorEditor::timerCallback()
         mResizePending = false;
     }
 
-    // static auto startTime = juce::Time::getMillisecondCounterHiRes();
     const double now = juce::Time::getMillisecondCounterHiRes();
 
     if (!mStartTimeSet) {
@@ -127,7 +125,6 @@ void AnimatedLpgProcessorEditor::resized()
 void AnimatedLpgProcessorEditor::mouseDown(const juce::MouseEvent& event)
 {
         juce::ignoreUnused(event);
-
 }
 
 void AnimatedLpgProcessorEditor::mouseDrag(const juce::MouseEvent& event)
@@ -164,11 +161,9 @@ void AnimatedLpgProcessorEditor::mouseWheelMove(const juce::MouseEvent& e,
 
 bool AnimatedLpgProcessorEditor::keyPressed(const juce::KeyPress& key)
 {
-    if (!mTextInputActive) return false;
 
     if (key == juce::KeyPress::escapeKey)
     {
-        mTextInputActive = false;
         setWantsKeyboardFocus(false);
         return true;
     }

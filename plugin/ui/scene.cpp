@@ -145,7 +145,7 @@ void Scene::renderFrame(const float currentTime)
         //=====================================
         //Push into buffer / fill buffer
         //=====================================
-        setUniforms(currentTime);
+        setUniforms(mQueue, mUniformBuffer, currentTime);
         const WGPUTextureView targetView = wgpuTextureCreateView(surfaceTexture.texture, &viewDesc);
         wgpuTextureRelease(surfaceTexture.texture);
 
@@ -198,15 +198,18 @@ void Scene::renderFrame(const float currentTime)
         wgpuDeviceTick(mDevice);
 }
 
-void Scene::setUniforms(const float time)
+void Scene::setUniforms(WGPUQueue queue, const WGPUBuffer uniformBuffer, const float time)
 {
     mUniforms.time        = time;
+    std::memcpy(mUniforms.modelMatrix, kIdentity, sizeof(kIdentity));  // <-- add
     mUniforms.lightPos[0] = 0.0f;
     mUniforms.lightPos[1] = 0.35f;
     mUniforms.lightPos[2] = 0.0f;
     mUniforms.aspectRatio = static_cast<float>(mWidth) / static_cast<float>(mHeight);
-
+    mUniforms.materialId  = MAT_FLOOR;
     updateViewMatrix();
+    wgpuQueueWriteBuffer(queue, uniformBuffer,
+                             MAT_FLOOR * mUniformStride, &mUniforms, sizeof(MyUniforms));
 }
 
 void Scene::ConfigureVertexLayout()
@@ -375,10 +378,11 @@ void Scene::updateDepthTexture(const uint32_t width, const uint32_t height)
 
 void Scene::initializeFloor()
 {
+    std::cout << "Initializing floor" << std::endl;
     std::vector<FloorVertex> vertices;
     std::vector<FloorIndex>  indices;
 
-    circularFloor::buildFloor(vertices, indices, 0.95f, 64);  // was 1.0f
+    circularFloor::buildFloor(vertices, indices, 0.95f, 64);
 
     mFloorIndexCount = static_cast<uint32_t>(indices.size());
 
@@ -401,7 +405,6 @@ void Scene::updateViewMatrix()
     constexpr float cameraY  = CameraState::eyeY;
     const float cameraZ      = mCameraState.posZ;
 
-    // Look target one unit ahead in the yaw direction
     const float tx = cameraX + sinf(yaw);
     const float tz = cameraZ - cosf(yaw);
 

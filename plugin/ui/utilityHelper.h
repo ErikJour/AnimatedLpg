@@ -11,7 +11,7 @@ namespace AnimatedLpg
 {
     static constexpr uint32_t kMSAASamples = 4;
 
-    inline WGPUAdapter requestAdapterSync(WGPUInstance instance, WGPURequestAdapterOptions const* options) {
+    inline WGPUAdapter requestAdapterSync(const WGPUInstance instance, WGPURequestAdapterOptions const* options) {
         struct UserData {
             WGPUAdapter adapter = nullptr;
             bool requestEnded = false;
