@@ -8,7 +8,7 @@ namespace AnimatedLpg
     struct FloorVertex
     {
         float x, y, z;
-        float nX, nY, nZ; //vertex normals, used for lighting
+        float nX, nY, nZ;
         float r, g, b;
     };
 

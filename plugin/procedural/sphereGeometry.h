@@ -1,77 +1,107 @@
-
 #pragma once
+#include <vector>
 
-//radius = 1
-//widthSegments = 32
-//heightSegments = 26
-//phiStart = 0;
-//phiLength = PI * 2
-//thetaStart = 0;
-//thetaLength = PI
+#include "geometryMath.h"
 
-//widthSegments = std::max( 3, std::floor( widthSegments ) );
-//heightSegments = std::max( 2, std::floor( heightSegments ) );
+namespace AnimatedLpg
+{
 
-//float thetaEnd = std::min( thetaStart + thetaLength, PI );
+    struct SphereVertex
+    {
+        float x, y, z;
+        float nX, nY, nZ;
+        float r, g, b;
+    };
 
-//int index = 0;
+    using SphereIndex = uint16_t;
 
-//vector<float> grid = [];
+    constexpr float PI = 3.14159265358979323846f;
+    constexpr float EPSILON = 0.00001f;
+    class SphereGeometry
+    {
+    public:
+        static void buildFloor(std::vector<SphereVertex>& vertices,
+                                 std::vector<SphereIndex>& indices,
+                                    const float radius = 1.0f,
+                                    int widthSegments = 32,
+                                    int heightSegments = 26,
+                                    const float phiStart = 0.0f,
+                                    const float phiLength = PI * 2,
+                                    const float thetaStart = 0.0f,
+                                    const float thetaLength = PI)
+        {
+            widthSegments = std::max( 3, static_cast<int>(std::floor( widthSegments ) ) );
+            heightSegments = std::max( 2, static_cast<int>(std::floor( heightSegments ) ) );
+            const float thetaEnd = std::min( thetaStart + thetaLength, PI );
 
-//vec3f vertex = [];
-//
-// Created by Erik Jourgensen on 6/22/26.
-//A sphere geometry based on the Three.js sphere
-//
+            int index = 0;
+            const std::vector<std::vector<uint32_t>> grid = {};
 
-//vec3f normal = [];
+            SphereVertex vertex = {};
+            vec3 normal = {};
 
-//Buffers
+            std::vector<float> normals = {};
+            std::vector<float> uvs = {};
 
-//indices [];
-//vertices [];
-//normals [];
-//uvs [];
+            //generate vertices, normals, and uvs
+            for (int iy = 0; iy <= static_cast<int>(heightSegments); iy++)
+            {
+                std::vector<int> verticesRow = {};
 
-//for (let iy = 0; iy <= heightSegments; iy++) {
-//verticesRow = [];
-//v = iy / heightSegments;
-//offset = 0;
-//if (iy == 0 && thetaStart == 0)
-//uOffset = 0.5 / widthSegments;
-//else if (iy == heightSegments && thetaEnd == PI) {
-//uoffset = -0.5 / widthSegments;
-//for (let ix = 0; ix <= widthSegments; ix++) {
-//u = ix / widthSegments;
+                int v = iy / static_cast<int>(heightSegments);
+                float offset = 0.0f;
 
-//vertex
-//vertex.x = -radius * cos( phiStart + u * phiLength ) * sin (thetaStart + v * thetaLength );
-//vertex.y = radius * cos(thetaStart + v * thetaLength);
-//vertex.z = radius * sin (phiStart + u * phiLength) * sin (thetaStart  + v * thetaLength);
-//vertices.push9vertex.x, vertex.y, vertex.z);
+                if ( iy == 0 && thetaStart == 0.0f)
+                {
+                    offset = 0.5f / static_cast<float>(widthSegments);
+                }
 
-//normal
-//normal.copy( vertex ).normalize();
-//normals.push( normal.x, normal.y, normal.z );
+                else if (iy == heightSegments && std::abs(thetaEnd - PI) < EPSILON)
+                {
+                    offset = -0.5f / static_cast<float>(widthSegments);
+                }
+            }
 
-//uv
+            for (int ix = 0; ix <= widthSegments; ix++)
+            {
+                const int u = ix / widthSegments;
 
-//uvs.push( u + offset, 1 - v);
-//verticesRow.push ( index++ );
-//grid.push(verticesRow);
+                //vertex
+                vertex.x = -radius * std::cos( phiStart + u * phiLength) * std::sin (thetaStart + v * thetaLength);
+                vertex.y = radius * std::cos( thetaStart + v * thetaLength );
+                vertex.z = radius * std::sin( phiStart + u * phiLength ) * std::sin( thetaStart + v * thetaLength );
 
-//indices
+                vertices.push_back({
+               vertex.x, vertex.y, vertex.z,
+               0.0f, 1.0f, 0.0f,
+               1.0f, 1.0f, 1.0f
+               });
+            }
 
-//for ( let iy = 0; iy < heightSegments; iy++ ) {
-//for (let ix = 0; ix < widthSegments; ix++) {
-//a = grid[ iy ] [ix + 1];
-//b = grid[ iy ][ ix ];
-//c = grid[ iy + 1][ ix ];
-//d = grid [ iy + 1][ ix + 1];
-//if (iy !== 0 ||thetaStart > 0) indices.push (a, b, d);
-//if (iy !== heightSegments - 1 || thetaEnd < PI) indices.push (b, c, d);
+            for (int iy = 0; iy < heightSegments; iy++)
+            {
+                for (int ix = 0; ix < widthSegments; ix++)
+                {
+                    const auto a = grid[ iy ][ ix + 1 ];
+                    const auto b = grid[ iy ][ ix ];
+                    const auto c = grid[ iy + 1 ][ ix ];
+                    const auto d = grid[ iy + 1 ][ ix + 1 ];
 
-//build the geometry
+                    if ( iy != 0 || thetaStart > 0)  indices.push_back( a, b, d );
+                    if (iy != heightSegments - 1 || thetaEnd < PI) indices.push_back( b, c, d );
+                }
+            }
+
+
+
+
+
+
+
+
+        }
+    };
+}
 
 
 
