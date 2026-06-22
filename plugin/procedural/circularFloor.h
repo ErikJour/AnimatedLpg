@@ -23,7 +23,7 @@ namespace AnimatedLpg
         static void buildFloor(std::vector<FloorVertex>& vertices,
                                  std::vector<FloorIndex>& indices,
                                         const float radius = 1.0f,
-                                                int segments = 32)
+                                        const int segments = 32)
         {
             constexpr float floorHeight = -0.15f;
 
@@ -40,7 +40,6 @@ namespace AnimatedLpg
 
             for (int i = 0; i < segments; ++i)
             {
-                //We create a point at each segment's angle around a circle
                 const float theta = (static_cast<float>(i) / static_cast<float>(segments) * 2.0f * PI);
                 const float pointX = std::cos(theta) * radius;
                 const float pointZ = std::sin(theta) * radius;
