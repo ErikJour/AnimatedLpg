@@ -15,12 +15,12 @@ endif()
 #==================================
 #Binary assets
 #==================================
-#juce_add_binary_data(AnimatedLpgAssets
-#        NAMESPACE BinaryData
-#        HEADER_NAME BinaryData.h
-#        SOURCES
-#        Assets/ERIK-JOURGENSEN_ICON_B_W.png
-#)
+juce_add_binary_data(AnimatedLpgAssets
+        NAMESPACE BinaryData
+        HEADER_NAME BinaryData.h
+        SOURCES
+        assets/ERIK-JOURGENSEN_ICON_B_W.png
+)
 
 #==================================
 #Add plugin
@@ -80,6 +80,7 @@ target_sources(AnimatedLPG
         ui/resourceManager.cpp
         ui/WebGpuWindow.cpp
         ui/scene.cpp
+        ui/AnimatedLogo.cpp
 )
 
 if (APPLE)
@@ -97,7 +98,7 @@ target_include_directories(AnimatedLPG
         dsp
         ui
         procedural
-#       shaders
+        shaders
 #       utilities
 )
 
@@ -107,7 +108,7 @@ target_include_directories(AnimatedLPG
 target_link_libraries(AnimatedLPG
         PRIVATE
         webgpu
-#        AnimatedLpgAssets
+        AnimatedLpgAssets
         juce::juce_audio_utils
         juce::juce_gui_extra
         juce::juce_dsp

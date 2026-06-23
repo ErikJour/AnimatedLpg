@@ -10,6 +10,7 @@
 #include "cameraState.h"
 #include "dragState.h"
 #include "sphereGeometry.h"
+#include "AnimatedLogo.h"
 
 #define WGPU_STR(s) WGPUStringView{s, sizeof(s) - 1}
 
@@ -94,6 +95,8 @@ namespace AnimatedLpg
         //Camera
         CameraState mCameraState;
         DragState mDrag;
+        // Logo
+        AnimatedLogo mLogo;
 
     };
 }
