@@ -9,6 +9,7 @@
 #include "circularFloor.h"
 #include "cameraState.h"
 #include "dragState.h"
+#include "sphereGeometry.h"
 
 #define WGPU_STR(s) WGPUStringView{s, sizeof(s) - 1}
 
@@ -32,6 +33,7 @@ namespace AnimatedLpg
         void initializeScene();
         bool createPipeline();
         void initializeFloor();
+        void initializeSphere();
         void updateDepthTexture(uint32_t width, uint32_t height);
         void updateViewMatrix();
         void onMouseButton(int button, bool isPressed, float xpos, float ypos);
@@ -85,6 +87,10 @@ namespace AnimatedLpg
         WGPUBuffer                          mFloorVertexBuffer   = nullptr;
         WGPUBuffer                          mFloorIndexBuffer    = nullptr;
         uint32_t                            mFloorIndexCount     = 0;
+        //Sphere
+        WGPUBuffer                          mSphereVertexBuffer   = nullptr;
+        WGPUBuffer                          mSphereIndexBuffer    = nullptr;
+        uint32_t                            mSphereIndexCount     = 0;
         //Camera
         CameraState mCameraState;
         DragState mDrag;

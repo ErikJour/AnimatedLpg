@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-
 #include "geometryMath.h"
 
 namespace AnimatedLpg
@@ -15,12 +14,13 @@ namespace AnimatedLpg
 
     using SphereIndex = uint16_t;
 
-    constexpr float PI = 3.14159265358979323846f;
+    // constexpr float PI = 3.14159265358979323846f;
     constexpr float EPSILON = 0.00001f;
+
     class SphereGeometry
     {
     public:
-        static void buildFloor(std::vector<SphereVertex>& vertices,
+        static void buildSphere(std::vector<SphereVertex>& vertices,
                                  std::vector<SphereIndex>& indices,
                                     const float radius = 1.0f,
                                     int widthSegments = 32,
@@ -34,71 +34,65 @@ namespace AnimatedLpg
             heightSegments = std::max( 2, static_cast<int>(std::floor( heightSegments ) ) );
             const float thetaEnd = std::min( thetaStart + thetaLength, PI );
 
-            int index = 0;
-            const std::vector<std::vector<uint32_t>> grid = {};
+            std::vector<uint32_t> grid;
+            grid.reserve((static_cast<size_t>(heightSegments) + 1) * (static_cast<size_t>(widthSegments) + 1));
 
             SphereVertex vertex = {};
-            vec3 normal = {};
 
             std::vector<float> normals = {};
             std::vector<float> uvs = {};
 
-            //generate vertices, normals, and uvs
             for (int iy = 0; iy <= static_cast<int>(heightSegments); iy++)
             {
                 std::vector<int> verticesRow = {};
 
-                int v = iy / static_cast<int>(heightSegments);
-                float offset = 0.0f;
+                const float v = static_cast<float>(iy) / static_cast<float>(heightSegments);
 
-                if ( iy == 0 && thetaStart == 0.0f)
+
+                for (int ix = 0; ix <= widthSegments; ix++) //must be nested inside iy loop
                 {
-                    offset = 0.5f / static_cast<float>(widthSegments);
+                    const float u = static_cast<float>(ix) / static_cast<float>(widthSegments);
+
+                    //vertex
+                    vertex.x = -radius * std::cos( phiStart + u * phiLength) * std::sin (thetaStart + v * thetaLength);
+                    vertex.y = radius * std::cos( thetaStart + v * thetaLength );
+                    vertex.z = radius * std::sin( phiStart + u * phiLength ) * std::sin( thetaStart + v * thetaLength );
+
+                    // float nX = vertex.x / radius;
+                    // float nY = vertex.y / radius;
+                    // float nZ = vertex.z / radius;
+
+                    vertices.push_back({
+                   vertex.x, vertex.y, vertex.z,
+                   0.0f, 1.0f, 0.0f,
+                   1.0f, 1.0f, 1.0f
+                   });
+                    grid.push_back(static_cast<uint32_t>(vertices.size() - 1));
                 }
-
-                else if (iy == heightSegments && std::abs(thetaEnd - PI) < EPSILON)
-                {
-                    offset = -0.5f / static_cast<float>(widthSegments);
-                }
-            }
-
-            for (int ix = 0; ix <= widthSegments; ix++)
-            {
-                const int u = ix / widthSegments;
-
-                //vertex
-                vertex.x = -radius * std::cos( phiStart + u * phiLength) * std::sin (thetaStart + v * thetaLength);
-                vertex.y = radius * std::cos( thetaStart + v * thetaLength );
-                vertex.z = radius * std::sin( phiStart + u * phiLength ) * std::sin( thetaStart + v * thetaLength );
-
-                vertices.push_back({
-               vertex.x, vertex.y, vertex.z,
-               0.0f, 1.0f, 0.0f,
-               1.0f, 1.0f, 1.0f
-               });
             }
 
             for (int iy = 0; iy < heightSegments; iy++)
             {
                 for (int ix = 0; ix < widthSegments; ix++)
                 {
-                    const auto a = grid[ iy ][ ix + 1 ];
-                    const auto b = grid[ iy ][ ix ];
-                    const auto c = grid[ iy + 1 ][ ix ];
-                    const auto d = grid[ iy + 1 ][ ix + 1 ];
+                    const int rowWidth = widthSegments + 1;
+                    const auto a = grid[ static_cast<uint32_t>(iy) * static_cast<uint32_t>(rowWidth) + static_cast<uint32_t>((ix + 1)) ];
+                    const auto b = grid[ static_cast<uint32_t>(iy) * static_cast<uint32_t>(rowWidth) + static_cast<uint32_t>(ix) ];
+                    const auto c = grid[ static_cast<uint32_t>((iy + 1) * rowWidth + ix) ];
+                    const auto d = grid[ static_cast<uint32_t>((iy + 1) * rowWidth + (ix + 1)) ];
 
-                    if ( iy != 0 || thetaStart > 0)  indices.push_back( a, b, d );
-                    if (iy != heightSegments - 1 || thetaEnd < PI) indices.push_back( b, c, d );
+                    if (iy != 0 || thetaStart > 0) {
+                        indices.push_back(static_cast<uint16_t>(a));
+                        indices.push_back(static_cast<uint16_t>(b));
+                        indices.push_back(static_cast<uint16_t>(d));
+                    }
+                    if (iy != heightSegments - 1 || thetaEnd < PI) {
+                        indices.push_back(static_cast<uint16_t>(b));
+                        indices.push_back(static_cast<uint16_t>(c));
+                        indices.push_back(static_cast<uint16_t>(d));
+                    }
                 }
             }
-
-
-
-
-
-
-
-
         }
     };
 }

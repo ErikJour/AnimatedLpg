@@ -5,6 +5,8 @@
 #include "scene.h"
 #include <cmath>
 
+#include "sphereGeometry.h"
+
 namespace {
 
 void buildLookAt(float out[16],
@@ -110,6 +112,8 @@ void Scene::terminate()
     if (mDepthTexture)                  { wgpuTextureDestroy(mDepthTexture); wgpuTextureRelease(mDepthTexture); mDepthTexture = nullptr; }
     if (mMsaaTextureView)               { wgpuTextureViewRelease(mMsaaTextureView); mMsaaTextureView = nullptr; }
     if (mMsaaTexture)                   { wgpuTextureDestroy(mMsaaTexture); wgpuTextureRelease(mMsaaTexture); mMsaaTexture = nullptr; }
+    if (mSphereVertexBuffer)             { wgpuBufferRelease(mSphereVertexBuffer); mSphereVertexBuffer = nullptr; }
+    if (mSphereIndexBuffer)              { wgpuBufferRelease(mSphereIndexBuffer); mSphereIndexBuffer = nullptr; }
     if (mFloorVertexBuffer)             { wgpuBufferRelease(mFloorVertexBuffer); mFloorVertexBuffer = nullptr; }
     if (mFloorIndexBuffer)              { wgpuBufferRelease(mFloorIndexBuffer); mFloorIndexBuffer = nullptr; }
     if (mBindGroup)                     { wgpuBindGroupRelease(mBindGroup); mBindGroup = nullptr; }
@@ -181,6 +185,7 @@ void Scene::renderFrame(const float currentTime)
         wgpuRenderPassEncoderSetPipeline(renderPass, mPipeline);
         //Floor
         setItemBuffers(mFloorVertexBuffer, mFloorIndexBuffer, mFloorIndexCount, MAT_FLOOR, renderPass);
+        setItemBuffers(mSphereVertexBuffer, mSphereIndexBuffer, mSphereIndexCount, MAT_FLOOR, renderPass);
         wgpuRenderPassEncoderEnd(renderPass);
         wgpuRenderPassEncoderRelease(renderPass);
 
@@ -257,7 +262,8 @@ void Scene::reloadShader()
 
 void Scene::initializeScene()
 {
-    initializeFloor();
+    // initializeFloor();
+    initializeSphere();
 }
 
 bool Scene::createPipeline()
@@ -396,6 +402,28 @@ void Scene::initializeFloor()
     bd.size  = (indices.size() * sizeof(FloorIndex) + 3) & ~3ULL;
     mFloorIndexBuffer = wgpuDeviceCreateBuffer(mDevice, &bd);
     wgpuQueueWriteBuffer(mQueue, mFloorIndexBuffer, 0, indices.data(), bd.size);
+}
+
+void Scene::initializeSphere()
+{
+    std::cout << "Initializing Sphere" << std::endl;
+    std::vector<SphereVertex> vertices;
+    std::vector<SphereIndex>  indices;
+
+    SphereGeometry::buildSphere(vertices, indices);
+
+    mSphereIndexCount = static_cast<uint32_t>(indices.size());
+
+    WGPUBufferDescriptor bd{};
+    bd.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_Vertex;
+    bd.size  = vertices.size() * sizeof(SphereVertex);
+    mSphereVertexBuffer = wgpuDeviceCreateBuffer(mDevice, &bd);
+    wgpuQueueWriteBuffer(mQueue, mSphereVertexBuffer, 0, vertices.data(), bd.size);
+
+    bd.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_Index;
+    bd.size  = (indices.size() * sizeof(FloorIndex) + 3) & ~3ULL;
+    mSphereIndexBuffer = wgpuDeviceCreateBuffer(mDevice, &bd);
+    wgpuQueueWriteBuffer(mQueue, mSphereIndexBuffer, 0, indices.data(), bd.size);
 }
 
 void Scene::updateViewMatrix()
