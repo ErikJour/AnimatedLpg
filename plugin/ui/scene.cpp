@@ -262,7 +262,7 @@ void Scene::reloadShader()
 
 void Scene::initializeScene()
 {
-    // initializeFloor();
+    initializeFloor();
     initializeSphere();
 }
 

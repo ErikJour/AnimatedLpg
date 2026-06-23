@@ -22,9 +22,9 @@ namespace AnimatedLpg
     public:
         static void buildSphere(std::vector<SphereVertex>& vertices,
                                  std::vector<SphereIndex>& indices,
-                                    const float radius = 1.0f,
-                                    int widthSegments = 32,
-                                    int heightSegments = 26,
+                                    const float radius = 2.0f,
+                                    int widthSegments = 64,
+                                    int heightSegments = 32,
                                     const float phiStart = 0.0f,
                                     const float phiLength = PI * 2,
                                     const float thetaStart = 0.0f,
@@ -57,10 +57,6 @@ namespace AnimatedLpg
                     vertex.x = -radius * std::cos( phiStart + u * phiLength) * std::sin (thetaStart + v * thetaLength);
                     vertex.y = radius * std::cos( thetaStart + v * thetaLength );
                     vertex.z = radius * std::sin( phiStart + u * phiLength ) * std::sin( thetaStart + v * thetaLength );
-
-                    // float nX = vertex.x / radius;
-                    // float nY = vertex.y / radius;
-                    // float nZ = vertex.z / radius;
 
                     vertices.push_back({
                    vertex.x, vertex.y, vertex.z,
