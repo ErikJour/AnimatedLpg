@@ -25,7 +25,7 @@ namespace AnimatedLpg
                                         const float radius = 1.0f,
                                         const int segments = 32)
         {
-            constexpr float floorHeight = -0.15f;
+            constexpr float floorHeight = -0.25f;
 
             vertices.clear();
             indices.clear();

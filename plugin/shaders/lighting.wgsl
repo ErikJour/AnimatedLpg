@@ -24,7 +24,7 @@ fn roomPointLight(worldPos: vec3f, normal: vec3f) -> vec3f {
     let toLight    = lightPos - worldPos;
     let dist       = length(toLight);
     let lightDir   = toLight / dist;
-    let atten      = 1.0 / (1.0 + 12.0 * dist * dist);
+    let atten      = 1.0 / (1.0 + 12.0 * dist * dist * dist);
     let diffuse    = max(dot(normal, lightDir), 0.0) * atten;
     let lampColor  = vec3f(1.0, 0.92, 0.80);
     let ambient    = vec3f(0.035, 0.18, 0.3);

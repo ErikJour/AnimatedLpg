@@ -37,14 +37,12 @@ namespace AnimatedLpg
         bool     mDragging      = false;
         float    mDragOffset    = 0.0f;
         int      mActiveSlider  = 0;
-
         bool     timerReady     = false;
         bool     mResizePending = false;
         uint32_t mPendingW      = 0;
         uint32_t mPendingH      = 0;
         uint32_t mConfiguredW   = 0;
         uint32_t mConfiguredH   = 0;
-
         //Camera
         bool  mCameraDragging = false;
         float mLastMouseX     = 0.0f;

@@ -54,7 +54,7 @@ class AnimatedLpgAudioProcessor final : public juce::AudioProcessor
             mResponseCallback = std::move(cb);
         }
 
-        CameraState savedCameraState;
+        CameraState      savedCameraState;
         ResponseCallback mResponseCallback;
         std::mutex       mResponseMutex;
 
