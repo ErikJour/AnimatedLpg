@@ -21,7 +21,7 @@ fn shadeFloor(in: VertexOutput) -> vec4f {
     let baseColor = vec3f(0.7, 0.75, 0.5);
     let uv = (in.worldPos.xz);
     let grain = filmGrain(uv, 0.01);
-    let grainAmount = 0.15;
+    let grainAmount = 0.1;
     let color = baseColor * (1.0 + grain * grainAmount);
     return vec4f(color * roomPointLight(in.worldPos, normal), 1.0);
 }

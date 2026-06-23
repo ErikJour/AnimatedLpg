@@ -14,7 +14,6 @@ namespace AnimatedLpg
 
     using SphereIndex = uint16_t;
 
-    // constexpr float PI = 3.14159265358979323846f;
     constexpr float EPSILON = 0.00001f;
 
     class SphereGeometry

@@ -19,7 +19,6 @@ namespace AnimatedLpg
     class circularFloor
     {
     public:
-
         static void buildFloor(std::vector<FloorVertex>& vertices,
                                  std::vector<FloorIndex>& indices,
                                         const float radius = 1.0f,
@@ -53,7 +52,6 @@ namespace AnimatedLpg
 
             for (int i = 0; i < segments; ++i)
             {
-                //Create each triangle
                 const int nextSegment = (i + 1) % segments;
                 indices.push_back(0);
                 indices.push_back(static_cast<FloorIndex>(1 + i));
